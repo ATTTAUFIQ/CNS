@@ -1,0 +1,37 @@
+import java.util.Scanner;
+
+public class HillCipher {
+    private static final int SIZE = 2;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the plaintext (2 characters): ");
+        String plaintext = scanner.nextLine().toUpperCase();
+        System.out.print("Enter the key (4 characters): ");
+        String key = scanner.nextLine().toUpperCase();
+        
+        int[][] keyMatrix = new int[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0; j < SIZE; j++)
+                keyMatrix[i][j] = key.charAt(i * SIZE + j) - 'A';
+        
+        int[] plaintextVector = new int[SIZE];
+        for (int i = 0; i < SIZE; i++)
+            plaintextVector[i] = plaintext.charAt(i) - 'A';
+        
+        int[] encryptedVector = new int[SIZE];
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0; j < SIZE; j++)
+                encryptedVector[i] += keyMatrix[i][j] * plaintextVector[j];
+        
+        for (int i = 0; i < SIZE; i++)
+            encryptedVector[i] = (encryptedVector[i] % 26 + 26) % 26;
+
+        StringBuilder encryptedText = new StringBuilder();
+        for (int i = 0; i < SIZE; i++)
+            encryptedText.append((char) (encryptedVector[i] + 'A'));
+
+        System.out.println("Encrypted text: " + encryptedText.toString());
+        scanner.close();
+    }
+}
